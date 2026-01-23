@@ -12,7 +12,7 @@ try {
   deviceInfo.value = await useHybridDeviceInfo();
 	console.log("Device Info:", deviceInfo.value);
 } catch (err) {
-  console.log(err)
+  console.log(err);
 }
 
 onMounted(async () => {
