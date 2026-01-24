@@ -1,6 +1,7 @@
 export const useCloudinary = () => {
   const uploadImage = async (file: File): Promise<string | null> => {
     try {
+      // Ensure environment variables are defined
       const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
       const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET
 
