@@ -7,13 +7,13 @@ const contestants = ref<any[]>([]);
 const payment_methods = ref<any[]>([]);
 
 // User client services
-const deviceInfo:any = ref({});
-try {
-  deviceInfo.value = await useHybridDeviceInfo();
-	console.log("Device Info:", deviceInfo.value);
-} catch (err) {
-  console.log(err);
-}
+// const deviceInfo:any = ref({});
+// try {
+//   deviceInfo.value = await useHybridDeviceInfo();
+// 	console.log("Device Info:", deviceInfo.value);
+// } catch (err) {
+//   console.log(err);
+// }
 
 onMounted(async () => {
 	// fetch contestants
