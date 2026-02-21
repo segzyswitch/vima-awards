@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { collection, getDocs, Timestamp, query, orderBy,  } from "firebase/firestore";
 import { useAdminAuth } from '~/composables/useAdminAuth';
-import { openModal } from "~/utils/modal";
+import { openModal, closeModal } from "~/utils/modal";
 // SweetAlert
 const { $swal } = useNuxtApp();
 const { $db } = useNuxtApp();
@@ -56,9 +56,17 @@ async function resolveNominee(nominee:any) {
 	// openModal('newNominee');
 }
 
+// delete vote
+const voteToDelete:any = ref(null);
+function selectDeleteVote(vote:any) {
+	voteToDelete.value = vote;
+	openModal('deleteModal');
+}
 const { deleteVote } = useAdmin();
 const removeVote:any = ref(null);
+const loadDeleteVote = ref(false);
 async function resolveVote(vote:any) {
+	loadDeleteVote.value = true;
 	if (vote) {
 		removeVote.value = vote;
 		try {
@@ -69,6 +77,7 @@ async function resolveVote(vote:any) {
 					icon: 'warning',
 					text: result?.error??'Unable to delete, try again',
 				});
+				loadDeleteVote.value = false;
 				return false;
 			}
 			$swal.fire({
@@ -76,6 +85,8 @@ async function resolveVote(vote:any) {
 				icon: 'success',
 				text: 'Vote item removed successfully!',
 			});
+			loadDeleteVote.value = false;
+			closeModal('deleteModal');
 			console.log(result);
 			loadAll();
 		} catch (err) {
@@ -324,6 +335,7 @@ onMounted( () => {
 				</div>
 			</div>
 			<div class="col-sm-9">
+				<!-- Top Navbar -->
 				<div class="navbar navbar-expand-lg navbar-dark row mb-5 sticky-top bg-dark" style="height:60px;">
 					<div class="container-fluid">
 						<a class="navbar-brand d-inline-block d-sm-none" href="#" style="position:relative;top:20px;padding:5px 0;"><PageLogo /></a>
@@ -457,7 +469,7 @@ onMounted( () => {
 									<td>{{ vote.paymentMethod }} <a href="javascript:void(0)" @click.prevent="showProof(vote)" v-if="vote.proofFileName">Show reciept</a></td>
 									<td>{{ formatFirestoreTimestamp(vote.createdAt) }}</td>
 									<td>
-										<a href="javascript:void(0)" class="btn text-danger p-1" @click="resolveVote(vote)">delete</a>
+										<a href="javascript:void(0)" class="btn text-danger p-1" @click="selectDeleteVote(vote)">delete</a>
 									</td>
 								</tr>
 							</tbody>
@@ -571,6 +583,7 @@ onMounted( () => {
 		</div>
 	</div>
 	
+	<!-- Proof Modal -->
 	<div class="modal fade" id="proofModal" tabindex="-1">
 		<div class="modal-dialog modal-sm">
 			<div class="modal-content text-light">
@@ -579,6 +592,27 @@ onMounted( () => {
 				</div>
 				<div class="modal-body d-flex flex-column gap-3">
 					<img v-for="img in openProofs" :src="img" class="w-100 border rounded mb-3" />
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Delete Modal -->
+	<div class="modal fade" id="deleteModal" tabindex="-1">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content text-light">
+				<div class="modal-header border-0 d-block">
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body d-flex flex-column gap-3">
+					<p class="lead">Are you sure you want to delete this item?</p>
+					<div class="d-flex gap-3">
+						<button type="button" class="btn btn-secondary w-100" data-bs-dismiss="modal">Cancel</button>
+						<button type="button" class="btn btn-danger w-100" @click="resolveVote(voteToDelete)">
+							<i class="spinner-border spinner-border-sm" v-if="loadDeleteVote"></i>
+							<span v-else>Delete</span>
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>
