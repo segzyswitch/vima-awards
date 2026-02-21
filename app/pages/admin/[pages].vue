@@ -608,7 +608,7 @@ onMounted( () => {
 					<p class="lead">Are you sure you want to delete this item?</p>
 					<div class="d-flex gap-3">
 						<button type="button" class="btn btn-secondary w-100" data-bs-dismiss="modal">Cancel</button>
-						<button type="button" class="btn btn-danger w-100" @click="resolveVote(voteToDelete)">
+						<button type="button" :disabled="loadDeleteVote" class="btn btn-danger w-100" @click="resolveVote(voteToDelete)">
 							<i class="spinner-border spinner-border-sm" v-if="loadDeleteVote"></i>
 							<span v-else>Delete</span>
 						</button>
