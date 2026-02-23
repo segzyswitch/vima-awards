@@ -1,7 +1,7 @@
 export default defineNuxtPlugin(() => {
   if (process.client) {
     (window as any)._smartsupp = (window as any)._smartsupp || {};
-    (window as any)._smartsupp.key = 'ba13e9222270e05662782e04c9b0c2d357b08ea4';
+    (window as any)._smartsupp.key = '4d7c756d0974d36c03f1d10fd581e60b9c79b432';
 
     const script = document.createElement('script');
     script.src = 'https://www.smartsuppchat.com/loader.js';
