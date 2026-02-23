@@ -73,11 +73,11 @@ onMounted(async () => {
 	</header>
 
 	<section class="w-100 py-5 contest">
-		<div class="container">
+		<div class="container pb-5">
 			<div class="w-100 text-center py-5" v-if="!contestants.length">
 				<i class="spinner-border text-gold"></i>
 			</div>
-			<div class="row g-5" v-else>
+			<div class="row g-5 mb-5" v-else>
 				<div v-for="(nominee, idx) in contestants" :key="idx" class="col-sm-4 text-center">
 					<button class="w-100 h-100 card border-0 p-1 shadow-sm" data-bs-toggle="modal" :data-bs-target="`#Modal_${nominee.id}`">
 						<div class="w-100 card-body bg-dark py-4 d-flex flex-column justify-content-center">
